@@ -1,3 +1,44 @@
+
+$( document ).bind( "pagebeforecreate", function() {
+    // keys selector
+    $( this ).find( "fieldset" ).each( function( index, element ) {
+
+        var colCounter = 1;
+        for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
+            if ( !ignoreKeys[ keyIndex ] ) {
+                var input=$( "<input>" )
+                    .attr( "type", "checkbox" )
+                    .attr( "checked", "checked" )
+                    .attr( "id", "columnno_"+keyIndex );
+                var label=$( "<label>" )
+                    .attr( "for", "columnno_"+keyIndex )
+                    .html( keys[ keyIndex ] );
+                $( this )
+                    .append( input )
+                    .append( label );
+
+                label.click( function() {
+                    var labelFor = $( this ).attr( "for" );
+                    var checked = $("input#"+labelFor).is( ":checked" );
+                    var columnNo = labelFor.split("_")[1];
+                    var selector = "td:nth-child("+columnNo+")";
+                    var tdSelected = $(selector);
+                    var numberSelected = tdSelected.length;
+
+                    if ( checked ) {
+                        $(selector).hide();
+                    } else {
+                        $(selector).show();
+                    }
+                });
+
+                colCounter++;
+            }
+        }
+
+    });
+});
+
 $( document ).bind( "pagecreate", function() {
     $( "#tablepage" ).bind( "pageshow", function() {
         var noWordSelected = true;
@@ -6,6 +47,7 @@ $( document ).bind( "pagecreate", function() {
         var currentSelections = []; // list of buttons selected indexed by key
         var numberCorrect = 0;
 
+        // add table headers for each key (apart from ignoreKeys
         $( this ).find( "thead" ).each( function( index, element ) {
             var tr=$( "<tr>" );
 
@@ -13,6 +55,7 @@ $( document ).bind( "pagecreate", function() {
                 if ( !ignoreKeys[ keyIndex ] ) {
                     var td=$( "<td>" )
                         .attr( "align", "center" )
+                        //.addClass( "column"+keyIndex )
                         .append( keys[ keyIndex ] );
                     tr.append( td );
                 }
@@ -99,7 +142,7 @@ $( document ).bind( "pagecreate", function() {
                                 keySelected[ thisKeyIndex ] = $( this );
 
                                 // highlight in green
-                                console.log( "green/"+thisWordIndex+"/"+thisKeyIndex+"/" );
+                                //console.log( "green/"+thisWordIndex+"/"+thisKeyIndex+"/" );
                             } else {
                                 if ( keySelected[ thisKeyIndex ] ) {
                                     // user changed mind
@@ -112,11 +155,11 @@ $( document ).bind( "pagecreate", function() {
                                     keySelected[ thisKeyIndex ] = $( this );
 
                                     // highlight in green
-                                    console.log( "amber/"+thisWordIndex+"/"+thisKeyIndex+"/" );
+                                    //console.log( "amber/"+thisWordIndex+"/"+thisKeyIndex+"/" );
                                 } else {
                                     var thisKey = keys[ thisKeyIndex ];
-                                    console.log( "1/"+thisWordIndex+"/"+currentlySelectedWord+"/" );
-                                    console.log( "1/"+words[thisWordIndex][thisKey]+"/"+words[currentlySelectedWord][thisKey]+"/" );
+                                    //console.log( "1/"+thisWordIndex+"/"+currentlySelectedWord+"/" );
+                                    //console.log( "1/"+words[thisWordIndex][thisKey]+"/"+words[currentlySelectedWord][thisKey]+"/" );
                                     var correct = words[ thisWordIndex ][ thisKey ] === words[ currentlySelectedWord ][ thisKey ];
                                     if ( correct ) {
                                         $( this ).each( selectButton );
@@ -124,7 +167,7 @@ $( document ).bind( "pagecreate", function() {
                                         keySelected[ thisKeyIndex ] = $( this );
 
                                         // highlight in green
-                                        console.log( "correct/"+thisWordIndex+"/"+currentlySelectedWord+"/" );
+                                        //console.log( "correct/"+thisWordIndex+"/"+currentlySelectedWord+"/" );
 
                                         var allKeysSelected = function() {
                                             var retVal = true;
@@ -139,7 +182,7 @@ $( document ).bind( "pagecreate", function() {
                                         }
 
                                         if ( allKeysSelected() ) {
-                                            console.log( "all correct" );
+                                            //console.log( "all correct" );
 
                                             noWordSelected = true;
                                             for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
@@ -192,10 +235,11 @@ $( document ).bind( "pagecreate", function() {
 
                         var columnWidth = 100.0/keys.length;
 
-                        var thisTd = $( "<td>" );
-                        thisTd.css( "width", columnWidth+"%" );
-                        thisTd.attr( "align", "center" );
-                        thisTd.html( thisButton );
+                        var thisTd = $( "<td>" )
+                            .css( "width", columnWidth+"%" )
+                            .attr( "align", "center" )
+                            //.addClass( "column"+keyIndex )
+                            .html( thisButton );
                         tr.append( thisTd );
                     }
                 }
