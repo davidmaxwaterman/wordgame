@@ -1,9 +1,8 @@
 
 $( document ).bind( "pagebeforecreate", function() {
-    // keys selector
     $( this ).find( "fieldset" ).each( function( index, element ) {
 
-        var colCounter = 1;
+        // add the column/key selector buttons
         for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
             if ( !ignoreKeys[ keyIndex ] ) {
                 var input=$( "<input>" )
@@ -20,22 +19,21 @@ $( document ).bind( "pagebeforecreate", function() {
                 label.click( function() {
                     var labelFor = $( this ).attr( "for" );
                     var checked = $("input#"+labelFor).is( ":checked" );
-                    var columnNo = labelFor.split("_")[1];
-                    var selector = "td:nth-child("+columnNo+")";
+                    var keyIndex = labelFor.split("_")[1];
+                    var selector = "td:nth-child("+keyIndex+")";
                     var tdSelected = $(selector);
                     var numberSelected = tdSelected.length;
 
                     if ( checked ) {
+                        ignoreKeys[ keyIndex ] = true;
                         $(selector).hide();
                     } else {
+                        ignoreKeys[ keyIndex ] = false;
                         $(selector).show();
                     }
                 });
-
-                colCounter++;
             }
         }
-
     });
 });
 
@@ -47,7 +45,7 @@ $( document ).bind( "pagecreate", function() {
         var currentSelections = []; // list of buttons selected indexed by key
         var numberCorrect = 0;
 
-        // add table headers for each key (apart from ignoreKeys
+        // add table headers for each key (apart from ignoreKeys)
         $( this ).find( "thead" ).each( function( index, element ) {
             var tr=$( "<tr>" );
 
@@ -55,7 +53,6 @@ $( document ).bind( "pagecreate", function() {
                 if ( !ignoreKeys[ keyIndex ] ) {
                     var td=$( "<td>" )
                         .attr( "align", "center" )
-                        //.addClass( "column"+keyIndex )
                         .append( keys[ keyIndex ] );
                     tr.append( td );
                 }
@@ -140,9 +137,6 @@ $( document ).bind( "pagecreate", function() {
                                 currentlySelectedWord = thisWordIndex;
 
                                 keySelected[ thisKeyIndex ] = $( this );
-
-                                // highlight in green
-                                //console.log( "green/"+thisWordIndex+"/"+thisKeyIndex+"/" );
                             } else {
                                 if ( keySelected[ thisKeyIndex ] ) {
                                     // user changed mind
@@ -153,21 +147,13 @@ $( document ).bind( "pagecreate", function() {
 
                                     currentlySelectedWord = thisWordIndex;
                                     keySelected[ thisKeyIndex ] = $( this );
-
-                                    // highlight in green
-                                    //console.log( "amber/"+thisWordIndex+"/"+thisKeyIndex+"/" );
                                 } else {
                                     var thisKey = keys[ thisKeyIndex ];
-                                    //console.log( "1/"+thisWordIndex+"/"+currentlySelectedWord+"/" );
-                                    //console.log( "1/"+words[thisWordIndex][thisKey]+"/"+words[currentlySelectedWord][thisKey]+"/" );
                                     var correct = words[ thisWordIndex ][ thisKey ] === words[ currentlySelectedWord ][ thisKey ];
                                     if ( correct ) {
                                         $( this ).each( selectButton );
 
                                         keySelected[ thisKeyIndex ] = $( this );
-
-                                        // highlight in green
-                                        //console.log( "correct/"+thisWordIndex+"/"+currentlySelectedWord+"/" );
 
                                         var allKeysSelected = function() {
                                             var retVal = true;
@@ -182,7 +168,6 @@ $( document ).bind( "pagecreate", function() {
                                         }
 
                                         if ( allKeysSelected() ) {
-                                            //console.log( "all correct" );
 
                                             noWordSelected = true;
                                             for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
@@ -190,10 +175,10 @@ $( document ).bind( "pagecreate", function() {
                                                     var buttonToRemove = keySelected[ keyIndex ];
                                                     var buttonTd = buttonToRemove.closest( "td" );
 
-                                                    var nextButton = buttonTd // <td>
-                                                        .closest( "tr" ) // <tr>
-                                                        .next( "tr" ) // next <tr>
-                                                        .find( "[key-index="+keyIndex+"]" ); // next <a> with the correct key-index
+                                                    var nextButton = buttonTd
+                                                        .closest( "tr" )
+                                                        .next( "tr" )
+                                                        .find( "[key-index="+keyIndex+"]" );
                                                     var nextButtonWordIndex = nextButton.attr( "word-index" );
 
                                                     buttonToRemove.remove();
@@ -201,17 +186,14 @@ $( document ).bind( "pagecreate", function() {
                                                     while ( nextButton.length ) {
                                                         var nextButtonTd = nextButton.closest( "td" );
 
-                                                        // move next button up into td
                                                         buttonTd.append( nextButton );
 
-                                                        // find next button
                                                         nextButton = nextButtonTd
-                                                            .closest( "tr" ) // <tr>
-                                                            .next( "tr" ) // next <tr>
-                                                            .find( "[key-index="+keyIndex+"]" ); // next <a> with the correct key-index
+                                                            .closest( "tr" )
+                                                            .next( "tr" )
+                                                            .find( "[key-index="+keyIndex+"]" );
                                                         nextButtonWordIndex = nextButton.attr( "word-index" );
 
-                                                        // move td to next button's td
                                                         buttonTd = nextButtonTd;
                                                     }
 
@@ -219,11 +201,15 @@ $( document ).bind( "pagecreate", function() {
                                                 }
                                             }
 
-                                            // remove last tr
                                             tbody.find( "tr" ).last().remove();
 
                                             numberCorrect++;
                                             document.title = "Game "+numberCorrect+"/"+words.length;
+
+                                            var allWordsCorrect = ( numberCorrect === words.length );
+                                            if ( allWordsCorrect ) {
+                                                alert( "Congratulations! You finished the game!" );
+                                            }
                                         }
                                     } else {
                                         // highlight in red?
@@ -238,7 +224,6 @@ $( document ).bind( "pagecreate", function() {
                         var thisTd = $( "<td>" )
                             .css( "width", columnWidth+"%" )
                             .attr( "align", "center" )
-                            //.addClass( "column"+keyIndex )
                             .html( thisButton );
                         tr.append( thisTd );
                     }
