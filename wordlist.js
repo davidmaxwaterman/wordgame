@@ -1,5 +1,7 @@
 var keys = [ "lesson", "Pinyin", "Chinese(simplified)", "English" ];
 var ignoreKeys = [ true, false, false, false ];
+var lessons = [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11" ];
+var ignoreLessons = [];
 var words = [
     { "lesson":"1", "Pinyin":"nǐ", "Chinese(simplified)":"你", "English":"you" },
     { "lesson":"1", "Pinyin":"hǎo", "Chinese(simplified)":"好", "English":"good" },

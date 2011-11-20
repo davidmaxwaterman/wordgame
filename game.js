@@ -1,6 +1,6 @@
 
 $( document ).bind( "pagebeforecreate", function() {
-    $( this ).find( "fieldset" ).each( function( index, element ) {
+    $( this ).find( "fieldset#keyselection" ).each( function( index, element ) {
 
         // add the column/key selector buttons
         for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
@@ -19,26 +19,44 @@ $( document ).bind( "pagebeforecreate", function() {
                 label.click( function() {
                     var labelFor = $( this ).attr( "for" );
                     var checked = $("input#"+labelFor).is( ":checked" );
-                    var keyIndex = labelFor.split("_")[1];
-                    var selector = "td:nth-child("+keyIndex+")";
-                    var tdSelected = $(selector);
-                    var numberSelected = tdSelected.length;
 
-                    if ( checked ) {
-                        ignoreKeys[ keyIndex ] = true;
-                        $(selector).hide();
-                    } else {
-                        ignoreKeys[ keyIndex ] = false;
-                        $(selector).show();
-                    }
+                    var keyIndex = labelFor.split("_")[1];
+
+                    ignoreKeys[ keyIndex ] = checked;
                 });
             }
         }
     });
+
+    $( this ).find( "fieldset#lessonselection" ).each( function( index, element ) {
+        // add the lesson selector buttons
+        for ( var lessonIndex=0; lessonIndex<lessons.length; lessonIndex++ ) {
+            var input=$( "<input>" )
+                .attr( "type", "checkbox" )
+                .attr( "checked", "checked" )
+                .attr( "id", "lesson_"+lessons[ lessonIndex ] );
+            var label=$( "<label>" )
+                .attr( "for", "lesson_"+lessons[ lessonIndex ] )
+                .html( lessons[ lessonIndex ] );
+            $( this )
+                .append( input )
+                .append( label );
+
+            label.click( function() {
+                var labelFor = $( this ).attr( "for" );
+                var checked = $("input#"+labelFor).is( ":checked" );
+
+                var lessonIndex = labelFor.split("_")[1]-1;
+
+                ignoreLessons[ lessonIndex ] = checked;
+            });
+        }
+
+    });
 });
 
 $( document ).bind( "pagecreate", function() {
-    $( "#tablepage" ).bind( "pageshow", function() {
+    $( "#tablepage" ).bind( "pagecreate", function() {
         var noWordSelected = true;
         var currentlySelectedWord;
         var keySelected = [ false, false, false ];
@@ -63,11 +81,12 @@ $( document ).bind( "pagecreate", function() {
 
         $( this ).find( "tbody" ).each( function( index, element ) {
             var tbody = $( element );
+            var selectedWords = [];
             var indexList = [];
 
             var shuffle = function( listToShuffle ) {
                 // fisher-yates shuffle
-                for ( var wordIndex=words.length-1; wordIndex>0; wordIndex-- ) {
+                for ( var wordIndex=listToShuffle.length-1; wordIndex>0; wordIndex-- ) {
                     var newIndex = Math.floor( Math.random()*wordIndex );
                     var oldIndex = listToShuffle[ newIndex ];
                     listToShuffle[ newIndex ]  = listToShuffle[ wordIndex ];
@@ -75,23 +94,34 @@ $( document ).bind( "pagecreate", function() {
                 }
             }
 
+            // trim the list to the selected lessons
+            for ( var wordIndex=0; wordIndex<words.length; wordIndex++ ) {
+                var thisLesson = words[ wordIndex ][ "lesson" ]-1;
+                if ( !ignoreLessons[ thisLesson ] ) {
+                    console.log( "MAXMAXMAX/including wordIndex/"+wordIndex );
+                    selectedWords.push( words[ wordIndex ] );
+                }
+            }
+
+            // shuffle the indexes
             for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
                 if ( !ignoreKeys[ keyIndex ] ) {
                     indexList[ keyIndex ] = [];
-                    for ( var wordIndex=0; wordIndex<words.length; wordIndex++ ) {
+                    for ( var wordIndex=0; wordIndex<selectedWords.length; wordIndex++ ) {
                         indexList[ keyIndex ][ wordIndex ]=wordIndex;
                     }
                     shuffle( indexList[ keyIndex ] );
                 }
             }
 
-            for ( var wordIndex=0; wordIndex<words.length; wordIndex++ ) {
+            for ( var wordIndex=0; wordIndex<selectedWords.length; wordIndex++ ) {
                 var tr=$( "<tr>" );
                 for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
                     if ( !ignoreKeys[ keyIndex ] ) {
                         var shuffledWordIndex = indexList[ keyIndex ][ wordIndex ];
                         var thisKey = keys[ keyIndex ];
-                        var thisWord = words[ shuffledWordIndex ][ thisKey ];
+                        var thisWord = selectedWords[ shuffledWordIndex ][ thisKey ];
+                        var thisLesson = selectedWords[ shuffledWordIndex ][ "lesson" ];
 
                         var thisText = $( "<span>" )
                             .addClass( "ui-btn-text" )
@@ -149,7 +179,7 @@ $( document ).bind( "pagecreate", function() {
                                     keySelected[ thisKeyIndex ] = $( this );
                                 } else {
                                     var thisKey = keys[ thisKeyIndex ];
-                                    var correct = words[ thisWordIndex ][ thisKey ] === words[ currentlySelectedWord ][ thisKey ];
+                                    var correct = selectedWords[ thisWordIndex ][ thisKey ] === selectedWords[ currentlySelectedWord ][ thisKey ];
                                     if ( correct ) {
                                         $( this ).each( selectButton );
 
@@ -204,16 +234,16 @@ $( document ).bind( "pagecreate", function() {
                                             tbody.find( "tr" ).last().remove();
 
                                             numberCorrect++;
-                                            document.title = "Game "+numberCorrect+"/"+words.length;
+                                            document.title = "Game "+numberCorrect+"/"+selectedWords.length;
 
-                                            var allWordsCorrect = ( numberCorrect === words.length );
+                                            var allWordsCorrect = ( numberCorrect === selectedWords.length );
                                             if ( allWordsCorrect ) {
                                                 alert( "Congratulations! You finished the game!" );
                                             }
                                         }
                                     } else {
                                         // highlight in red?
-                                        alert( "hint: "+words[ currentlySelectedWord ][ thisKey ] );
+                                        alert( "hint: "+selectedWords[ currentlySelectedWord ][ thisKey ] );
                                     }
                                 }
                             }
