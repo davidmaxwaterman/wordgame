@@ -8,9 +8,9 @@ $( "#intropage" ).live( "pagebeforecreate", function(event) {
                 var input=$( "<input>" )
                     .attr( "type", "checkbox" )
                     .attr( "checked", "checked" )
-                    .attr( "id", "columnno_"+keyIndex );
+                    .attr( "id", "column_"+keyIndex );
                 var label=$( "<label>" )
-                    .attr( "for", "columnno_"+keyIndex )
+                    .attr( "for", "column_"+keyIndex )
                     .html( keys[ keyIndex ] );
                 $( this )
                     .append( input )
