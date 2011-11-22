@@ -61,7 +61,7 @@ $( "#tablepage" ).live( "pageshow", function() {
 
     var noWordSelected = true;
     var currentlySelectedWord;
-    var keySelected = [ false, false, false ];
+    var keySelected = [ null, null, null ];
     var currentSelections = []; // list of buttons selected indexed by key
     var numberCorrect = 0;
 
@@ -100,7 +100,6 @@ $( "#tablepage" ).live( "pageshow", function() {
         for ( var wordIndex=0; wordIndex<words.length; wordIndex++ ) {
             var thisLesson = words[ wordIndex ][ "lesson" ]-1;
             if ( !ignoreLessons[ thisLesson ] ) {
-                console.log( "MAXMAXMAX/including wordIndex/"+wordIndex );
                 selectedWords.push( words[ wordIndex ] );
             }
         }
@@ -181,7 +180,9 @@ $( "#tablepage" ).live( "pageshow", function() {
                                 keySelected[ thisKeyIndex ] = $( this );
                             } else {
                                 var thisKey = keys[ thisKeyIndex ];
-                                var correct = selectedWords[ thisWordIndex ][ thisKey ] === selectedWords[ currentlySelectedWord ][ thisKey ];
+                                var correct =
+                                    selectedWords[ thisWordIndex ][ thisKey ]
+                                    === selectedWords[ currentlySelectedWord ][ thisKey ];
                                 if ( correct ) {
                                     $( this ).each( selectButton );
 
@@ -192,7 +193,7 @@ $( "#tablepage" ).live( "pageshow", function() {
 
                                         for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
                                             if ( !ignoreKeys[keyIndex] ) {
-                                                retVal &= ( keySelected[ keyIndex ]!=null );
+                                                retVal &= ( keySelected[ keyIndex ] != null );
                                             }
                                         }
 
