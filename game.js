@@ -1,5 +1,5 @@
 
-$( "#intropage" ).live( "pagebeforecreate", function(event) {
+$( "#intropage" ).live( "pagecreate", function(event) {
     $( "fieldset#keyselection" ).each( function( index, element ) {
 
         // add the column/key selector buttons
@@ -11,6 +11,7 @@ $( "#intropage" ).live( "pagebeforecreate", function(event) {
                     .attr( "id", "column_"+keyIndex );
                 var label=$( "<label>" )
                     .attr( "for", "column_"+keyIndex )
+                    .addClass( "custom" )
                     .html( keys[ keyIndex ] );
                 $( this )
                     .append( input )
