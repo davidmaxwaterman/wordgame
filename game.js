@@ -17,7 +17,7 @@ $( "#intropage" ).live( "pagecreate", function(event) {
                     .append( input )
                     .append( label );
 
-                label.click( function() {
+                label.bind( "vclick", function() {
                     var labelFor = $( this ).attr( "for" );
                     var checked = $("input#"+labelFor).is( ":checked" );
 
@@ -43,7 +43,7 @@ $( "#intropage" ).live( "pagecreate", function(event) {
                 .append( input )
                 .append( label );
 
-            label.click( function() {
+            label.bind( "vclick", function() {
                 var labelFor = $( this ).attr( "for" );
                 var checked = $("input#"+labelFor).is( ":checked" );
 
@@ -146,7 +146,7 @@ $( "#tablepage" ).live( "pageshow", function() {
                         .addClass( "ui-shadow" )
                         .html( thisSpan );
 
-                    thisButton.click( function() {
+                    thisButton.bind( "vclick", function() {
                         var selectButton = function() {
                             $( this )
                                 .removeClass( "ui-btn-up-c" )
