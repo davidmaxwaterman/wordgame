@@ -24,6 +24,8 @@ $( "#intropage" ).live( "pagecreate", function(event) {
                     var keyIndex = labelFor.split("_")[1];
 
                     ignoreKeys[ keyIndex ] = checked;
+
+                    return false;
                 });
             }
         }
@@ -50,6 +52,8 @@ $( "#intropage" ).live( "pagecreate", function(event) {
                 var lessonIndex = labelFor.split("_")[1]-1;
 
                 ignoreLessons[ lessonIndex ] = checked;
+
+                return false;
             });
         }
 
@@ -251,6 +255,8 @@ $( "#tablepage" ).live( "pageshow", function() {
                                 }
                             }
                         }
+
+                        return false;
                     });
 
                     var columnWidth = 100.0/keys.length;
