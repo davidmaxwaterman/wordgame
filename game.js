@@ -36,11 +36,15 @@ $( "#intropage" ).live( "pagecreate", function(event) {
         for ( var lessonIndex=0; lessonIndex<lessons.length; lessonIndex++ ) {
             var input=$( "<input>" )
                 .attr( "type", "checkbox" )
-                .attr( "checked", "checked" )
                 .attr( "id", "lesson_"+lessons[ lessonIndex ] );
             var label=$( "<label>" )
                 .attr( "for", "lesson_"+lessons[ lessonIndex ] )
                 .html( lessons[ lessonIndex ] );
+
+            if (lessonIndex===0) {
+                input.attr( "checked", "checked" );
+            }
+
             $( this )
                 .append( input )
                 .append( label );
