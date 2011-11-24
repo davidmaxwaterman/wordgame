@@ -174,15 +174,42 @@ $( "#tablepage" ).live( "pageshow", function() {
 
                             keySelected[ thisKeyIndex ] = $( this );
                         } else {
-                            if ( keySelected[ thisKeyIndex ] ) {
-                                // user changed mind
-                                // deselect all buttons for this key
-                                tbody.find( "a[key-index="+thisKeyIndex+"]" ).each( deselectButton );
-                                // select new one
-                                $( this ).each( selectButton );
+                            var countIgnoredKeys = function() {
+                                var retVal = 0;
+                                for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
+                                    if ( ignoreKeys[ keyIndex ] ) {
+                                        retVal++;
+                                    }
+                                }
 
-                                currentlySelectedWord = thisWordIndex;
-                                keySelected[ thisKeyIndex ] = $( this );
+                                return retVal;
+                            }
+                            var countSelectedKeys = function() {
+                                var retVal = 0;
+                                for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
+                                    if ( !ignoreKeys[ keyIndex ] && ( keySelected[ keyIndex ] != null ) ) {
+                                        retVal++;
+                                    }
+                                }
+
+                                return retVal;
+                            }
+
+                            if ( keySelected[ thisKeyIndex ] ) {
+                                var thisKeyAlreadySelected = ( keySelected[ thisKeyIndex ].attr( "wordIndex" ) === $( this ).attr( "wordIndex" ) );
+                                if ( thisKeyAlreadySelected ) {
+                                    keySelected[ thisKeyIndex ].each( deselectButton );
+                                    keySelected[ thisKeyIndex ] = null;
+                                } else if (countSelectedKeys() === 1) {
+                                    // user changed mind
+                                    // deselect all buttons for this key
+                                    tbody.find( "a[key-index="+thisKeyIndex+"]" ).each( deselectButton );
+                                    // select new one
+                                    $( this ).each( selectButton );
+
+                                    currentlySelectedWord = thisWordIndex;
+                                    keySelected[ thisKeyIndex ] = $( this );
+                                }
                             } else {
                                 var thisKey = keys[ thisKeyIndex ];
                                 var correct =
@@ -194,13 +221,7 @@ $( "#tablepage" ).live( "pageshow", function() {
                                     keySelected[ thisKeyIndex ] = $( this );
 
                                     var allKeysSelected = function() {
-                                        var retVal = true;
-
-                                        for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
-                                            if ( !ignoreKeys[keyIndex] ) {
-                                                retVal &= ( keySelected[ keyIndex ] != null );
-                                            }
-                                        }
+                                        var retVal = countSelectedKeys() == (keys.length-countIgnoredKeys());
 
                                         return retVal;
                                     }
