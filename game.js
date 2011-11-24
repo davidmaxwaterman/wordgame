@@ -41,7 +41,7 @@ $( "#intropage" ).live( "pagecreate", function(event) {
                 .attr( "for", "lesson_"+lessons[ lessonIndex ] )
                 .html( lessons[ lessonIndex ] );
 
-            if (lessonIndex===0) {
+            if (!ignoreLessons[ lessonIndex ]) {
                 input.attr( "checked", "checked" );
             }
 
