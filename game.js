@@ -196,10 +196,13 @@ $( "#tablepage" ).live( "pageshow", function() {
                             }
 
                             if ( keySelected[ thisKeyIndex ] ) {
-                                var thisKeyAlreadySelected = ( keySelected[ thisKeyIndex ].attr( "wordIndex" ) === $( this ).attr( "wordIndex" ) );
+                                var alreadySelectedWord = keySelected[ thisKeyIndex ].attr( "word-index" );
+                                var thisKeyAlreadySelected = ( alreadySelectedWord === thisWordIndex );
                                 if ( thisKeyAlreadySelected ) {
                                     keySelected[ thisKeyIndex ].each( deselectButton );
                                     keySelected[ thisKeyIndex ] = null;
+
+                                    noWordSelected = countSelectedKeys()===0;
                                 } else if (countSelectedKeys() === 1) {
                                     // user changed mind
                                     // deselect all buttons for this key
