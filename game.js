@@ -125,6 +125,18 @@ $( "#tablepage" ).live( "pageshow", function() {
         }
 
         for ( var wordIndex=0; wordIndex<selectedWords.length; wordIndex++ ) {
+
+            var countIgnoredKeys = function() {
+                var retVal = 0;
+                for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
+                    if ( ignoreKeys[ keyIndex ] ) {
+                        retVal++;
+                    }
+                }
+
+                return retVal;
+            }
+
             var tr=$( "<tr>" );
             for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
                 if ( !ignoreKeys[ keyIndex ] ) {
@@ -178,16 +190,7 @@ $( "#tablepage" ).live( "pageshow", function() {
 
                             keySelected[ thisKeyIndex ] = $( this );
                         } else {
-                            var countIgnoredKeys = function() {
-                                var retVal = 0;
-                                for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
-                                    if ( ignoreKeys[ keyIndex ] ) {
-                                        retVal++;
-                                    }
-                                }
 
-                                return retVal;
-                            }
                             var countSelectedKeys = function() {
                                 var retVal = 0;
                                 for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
@@ -287,7 +290,7 @@ $( "#tablepage" ).live( "pageshow", function() {
                         return false;
                     });
 
-                    var columnWidth = 100.0/keys.length;
+                    var columnWidth = 100.0/(keys.length-countIgnoredKeys());
 
                     var thisTd = $( "<td>" )
                         .css( "width", columnWidth+"%" )
