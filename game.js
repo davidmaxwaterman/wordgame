@@ -238,6 +238,8 @@ $( "#tablepage" ).live( "pageshow", function() {
 
                                     if ( allKeysSelected() ) {
 
+                                        // correctly selected each key, so remove the buttons and tds
+
                                         noWordSelected = true;
                                         for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
                                             if ( !ignoreKeys[ keyIndex ] ) {
@@ -271,6 +273,10 @@ $( "#tablepage" ).live( "pageshow", function() {
                                         }
 
                                         tbody.find( "tr" ).last().remove();
+
+                                        // on n950, it seems to be quite easy to select a button accidentally
+                                        // so here we deselect them all for the same key
+                                        tbody.find( "a[key-index="+thisKeyIndex+"]" ).each( deselectButton );
 
                                         numberCorrect++;
                                         document.title = "Game "+numberCorrect+"/"+selectedWords.length;
