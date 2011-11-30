@@ -1,7 +1,7 @@
 var keys = [ "lesson", "Pinyin", "Chinese(simplified)", "English" ];
 var ignoreKeys = [ true, false, false, false ];
-var lessons = [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11" ];
-var ignoreLessons = [ false, true, true, true, true, true, true, true, true, true, true ];
+var lessons = [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ];
+var ignoreLessons = [ false, true, true, true, true, true, true, true, true, true, true, true ];
 var words = [
     { "lesson":"1", "Pinyin":"nǐ", "Chinese(simplified)":"你", "English":"you" },
     { "lesson":"1", "Pinyin":"hǎo", "Chinese(simplified)":"好", "English":"good" },
@@ -221,5 +221,34 @@ var words = [
     { "lesson":"11", "Pinyin":"Qīngdao", "Chinese(simplified)":"青岛", "English":"Qingdao" },
     { "lesson":"11", "Pinyin":"liáotiānr", "Chinese(simplified)":"聊天儿", "English":"to chat" },
     { "lesson":"11", "Pinyin":"lèi", "Chinese(simplified)":"累", "English":"tired" },
-    { "lesson":"11", "Pinyin":"shuìjiào", "Chinese(simplified)":"睡觉", "English":"to sleep" }
+    { "lesson":"11", "Pinyin":"shuìjiào", "Chinese(simplified)":"睡觉", "English":"to sleep" },
+    { "lesson":"12", "Pinyin":"shǒujī", "Chinese(simplified)":"手机", "English":"mobile phone" },
+    { "lesson":"12", "Pinyin":"hào", "Chinese(simplified)":"号", "English":"number" },
+    { "lesson":"12", "Pinyin":"dǎ", "Chinese(simplified)":"打", "English":"to make (a phone call)" },
+    { "lesson":"12", "Pinyin":"wèi", "Chinese(simplified)":"喂", "English":"Hello (answering phone)" },
+    { "lesson":"12", "Pinyin":"guò", "Chinese(simplified)":"过", "English":"to pass (time)" },
+    { "lesson":"12", "Pinyin":"yíhuìr", "Chinese(simplified)":"一会儿", "English":"a short time" },
+    { "lesson":"12", "Pinyin":"gāngcái", "Chinese(simplified)":"刚才", "English":"just now" },
+    { "lesson":"12", "Pinyin":"bàn'gōngshì", "Chinese(simplified)":"办公室", "English":"office" },
+    { "lesson":"12", "Pinyin":"yǒukòngr", "Chinese(simplified)":"有空儿", "English":"be free" },
+    { "lesson":"12", "Pinyin":"shìr", "Chinese(simplified)":"事儿", "English":"things" },
+    { "lesson":"12", "Pinyin":"jiǎozi", "Chinese(simplified)":"饺子", "English":"dumpling" },
+    { "lesson":"12", "Pinyin":"néng", "Chinese(simplified)":"能", "English":"can (ability)" },
+    { "lesson":"12", "Pinyin":"fēicháng", "Chinese(simplified)":"非常", "English":"very much" },
+    { "lesson":"12", "Pinyin":"duōshao", "Chinese(simplified)":"多少", "English":"how many" },
+    { "lesson":"12", "Pinyin":"wèití", "Chinese(simplified)":"问题", "English":"problem" },
+    { "lesson":"12", "Pinyin":"zhǔnbèi", "Chinese(simplified)":"准备", "English":"to prepare (food)" },
+    { "lesson":"12", "Pinyin":"bǎi", "Chinese(simplified)":"百", "English":"hundred" },
+    { "lesson":"12", "Pinyin":"zìjǐ", "Chinese(simplified)":"自己", "English":"oneself" },
+    { "lesson":"12", "Pinyin":"kāiwánxiào", "Chinese(simplified)":"开玩笑", "English":"to joke" },
+    { "lesson":"12", "Pinyin":"líng", "Chinese(simplified)":"〇", "English":"zero" },
+    { "lesson":"12", "Pinyin":"zhèyàng", "Chinese(simplified)":"这样", "English":"this kind of" },
+    { "lesson":"12", "Pinyin":"diànhuà", "Chinese(simplified)":"电话", "English":"telephone" },
+    { "lesson":"12", "Pinyin":"hàomǎ", "Chinese(simplified)":"号码", "English":"number (telephone)" },
+    { "lesson":"12", "Pinyin":"dìzhǐ", "Chinese(simplified)":"地址", "English":"address" },
+    { "lesson":"12", "Pinyin":"zhīdao", "Chinese(simplified)":"知道", "English":"to know" },
+    { "lesson":"12", "Pinyin":"lóu", "Chinese(simplified)":"楼", "English":"building" },
+    { "lesson":"12", "Pinyin":"céng", "Chinese(simplified)":"层", "English":"floor" },
+    { "lesson":"12", "Pinyin":"cóng", "Chinese(simplified)":"从", "English":"from" },
+    { "lesson":"12", "Pinyin":"chūfā", "Chinese(simplified)":"出发", "English":"to leave (for a trip)" }
 ];
