@@ -38,14 +38,15 @@ $.getJSON( "wordlist.json", function( data ) {
         $( this ).find( "fieldset#lessonselection" ).each( function( index, element ) {
             // add the lesson selector buttons
             for ( var lessonIndex=0; lessonIndex<wordData.lessons.length; lessonIndex++ ) {
+                var lesson = wordData.lessons[ lessonIndex ];
                 var input=$( "<input>" )
                     .attr( "type", "checkbox" )
-                    .attr( "id", "lesson_"+wordData.lessons[ lessonIndex ] );
+                    .attr( "id", "lesson_"+lesson );
                 var label=$( "<label>" )
-                    .attr( "for", "lesson_"+wordData.lessons[ lessonIndex ] )
-                    .html( wordData.lessons[ lessonIndex ] );
+                    .attr( "for", "lesson_"+lesson )
+                    .html( lesson );
 
-                if (!wordData.ignoreLessons[ lessonIndex ]) {
+                if (!wordData.ignoreLessons[ lesson ]) {
                     input.attr( "checked", "checked" );
                 }
 
@@ -57,7 +58,7 @@ $.getJSON( "wordlist.json", function( data ) {
                     var labelFor = $( this ).attr( "for" );
                     var checked = $("input#"+labelFor).is( ":checked" );
 
-                    var lessonIndex = labelFor.split("_")[1]-1;
+                    var lessonIndex = labelFor.split("_")[1];
 
                     wordData.ignoreLessons[ lessonIndex ] = checked;
 
@@ -114,7 +115,7 @@ $( "#tablepage" ).live( "pageshow", function() {
 
         // trim the list to the selected lessons
         for ( var wordIndex=0; wordIndex<wordData.words.length; wordIndex++ ) {
-            var thisLesson = wordData.words[ wordIndex ][ "lesson" ]-1;
+            var thisLesson = wordData.words[ wordIndex ][ "lesson" ];
             if ( !wordData.ignoreLessons[ thisLesson ] ) {
                 selectedWords.push( wordData.words[ wordIndex ] );
             }
