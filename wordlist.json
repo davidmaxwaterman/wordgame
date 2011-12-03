@@ -1,8 +1,8 @@
 {
     "keys" : [ "lesson", "Pinyin", "Chinese(simplified)", "English" ],
     "ignoreKeys" : [ true, false, false, false ],
-    "lessons" : [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ],
-    "ignoreLessons" : [ false, true, true, true, true, true, true, true, true, true, true, true ],
+    "lessons" : [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "radicals" ],
+    "ignoreLessons" : [ false, true, true, true, true, true, true, true, true, true, true, true, true ],
     "words" : [
         { "lesson":"1", "Pinyin":"nǐ", "Chinese(simplified)":"你", "English":"you" },
         { "lesson":"1", "Pinyin":"hǎo", "Chinese(simplified)":"好", "English":"good" },
@@ -251,6 +251,20 @@
         { "lesson":"12", "Pinyin":"lóu", "Chinese(simplified)":"楼", "English":"building" },
         { "lesson":"12", "Pinyin":"céng", "Chinese(simplified)":"层", "English":"floor" },
         { "lesson":"12", "Pinyin":"cóng", "Chinese(simplified)":"从", "English":"from" },
-        { "lesson":"12", "Pinyin":"chūfā", "Chinese(simplified)":"出发", "English":"to leave (for a trip)" }
+        { "lesson":"12", "Pinyin":"chūfā", "Chinese(simplified)":"出发", "English":"to leave (for a trip)" },
+        { "lesson":"radicals", "Pinyin":"rì", "Chinese(simplified)":"日", "English":"re. sun" },
+        { "lesson":"radicals", "Pinyin":"yuè", "Chinese(simplified)":"月", "English":"re. moon" },
+        { "lesson":"radicals", "Pinyin":"hé", "Chinese(simplified)":"禾", "English":"re. grain" },
+        { "lesson":"radicals", "Pinyin":"shoǔ", "Chinese(simplified)":"扌", "English":"re. hand" },
+        { "lesson":"radicals", "Pinyin":"zú", "Chinese(simplified)":"left part of 踤", "English":"re. foot" },
+        { "lesson":"radicals", "Pinyin":"mù", "Chinese(simplified)":"木", "English":"re. wood" },
+        { "lesson":"radicals", "Pinyin":"shuǐ", "Chinese(simplified)":"水", "English":"re. water" },
+        { "lesson":"radicals", "Pinyin":"huǒ", "Chinese(simplified)":"火", "English":"re. fire" },
+        { "lesson":"radicals", "Pinyin":"tǔ", "Chinese(simplified)":"土", "English":"re. earth" },
+        { "lesson":"radicals", "Pinyin":"zhuō", "Chinese(simplified)":"舟", "English":"re. boat" },
+        { "lesson":"radicals", "Pinyin":"yoú", "Chinese(simplified)":"酉", "English":"re. wine" },
+        { "lesson":"radicals", "Pinyin":"shí", "Chinese(simplified)":"石", "English":"re. stone" },
+        { "lesson":"radicals", "Pinyin":"rén", "Chinese(simplified)":"人", "English":"re. human" },
+        { "lesson":"radicals", "Pinyin":"shān", "Chinese(simplified)":"山", "English":"re. mountain" }
     ]
 }
