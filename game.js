@@ -1,18 +1,55 @@
+var wordData;
+$.getJSON( "wordlist.json", function( data ) {
+    console.log("MAXMAXMAX/");
+    wordData = data;
 
-$( "#intropage" ).live( "pagecreate", function(event) {
-    $( "fieldset#keyselection" ).each( function( index, element ) {
+    $( "#intropage" ).live( "pagecreate", function(event) {
 
-        // add the column/key selector buttons
-        for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
-            if ( !ignoreKeys[ keyIndex ] ) {
+        $( "fieldset#keyselection" ).each( function( index, element ) {
+
+            // add the column/key selector buttons
+            for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
+                if ( !wordData.ignoreKeys[ keyIndex ] ) {
+                    var input=$( "<input>" )
+                        .attr( "type", "checkbox" )
+                        .attr( "checked", "checked" )
+                        .attr( "id", "column_"+keyIndex );
+                    var label=$( "<label>" )
+                        .attr( "for", "column_"+keyIndex )
+                        .addClass( "custom" )
+                        .html( wordData.keys[ keyIndex ] );
+                    $( this )
+                        .append( input )
+                        .append( label );
+
+                    label.bind( "vclick", function() {
+                        var labelFor = $( this ).attr( "for" );
+                        var checked = $("input#"+labelFor).is( ":checked" );
+
+                        var keyIndex = labelFor.split("_")[1];
+
+                        wordData.ignoreKeys[ keyIndex ] = checked;
+
+                        return false;
+                    });
+                }
+            }
+        });
+
+        $( this ).find( "fieldset#lessonselection" ).each( function( index, element ) {
+            // add the lesson selector buttons
+            for ( var lessonIndex=0; lessonIndex<wordData.lessons.length; lessonIndex++ ) {
                 var input=$( "<input>" )
                     .attr( "type", "checkbox" )
-                    .attr( "checked", "checked" )
-                    .attr( "id", "column_"+keyIndex );
+                    .attr( "id", "lesson_"+wordData.lessons[ lessonIndex ] );
                 var label=$( "<label>" )
-                    .attr( "for", "column_"+keyIndex )
-                    .addClass( "custom" )
-                    .html( keys[ keyIndex ] );
+                    .attr( "for", "lesson_"+wordData.lessons[ lessonIndex ] )
+                    .html( wordData.lessons[ lessonIndex ] );
+
+                if (!wordData.ignoreLessons[ lessonIndex ]) {
+                    input.attr( "checked", "checked" );
+                }
+
                 $( this )
                     .append( input )
                     .append( label );
@@ -21,47 +58,18 @@ $( "#intropage" ).live( "pagecreate", function(event) {
                     var labelFor = $( this ).attr( "for" );
                     var checked = $("input#"+labelFor).is( ":checked" );
 
-                    var keyIndex = labelFor.split("_")[1];
+                    var lessonIndex = labelFor.split("_")[1]-1;
 
-                    ignoreKeys[ keyIndex ] = checked;
+                    wordData.ignoreLessons[ lessonIndex ] = checked;
 
                     return false;
                 });
             }
-        }
+
+        });
     });
 
-    $( this ).find( "fieldset#lessonselection" ).each( function( index, element ) {
-        // add the lesson selector buttons
-        for ( var lessonIndex=0; lessonIndex<lessons.length; lessonIndex++ ) {
-            var input=$( "<input>" )
-                .attr( "type", "checkbox" )
-                .attr( "id", "lesson_"+lessons[ lessonIndex ] );
-            var label=$( "<label>" )
-                .attr( "for", "lesson_"+lessons[ lessonIndex ] )
-                .html( lessons[ lessonIndex ] );
-
-            if (!ignoreLessons[ lessonIndex ]) {
-                input.attr( "checked", "checked" );
-            }
-
-            $( this )
-                .append( input )
-                .append( label );
-
-            label.bind( "vclick", function() {
-                var labelFor = $( this ).attr( "for" );
-                var checked = $("input#"+labelFor).is( ":checked" );
-
-                var lessonIndex = labelFor.split("_")[1]-1;
-
-                ignoreLessons[ lessonIndex ] = checked;
-
-                return false;
-            });
-        }
-
-    });
+    $( "#intropage" ).trigger( "pagecreate" );
 });
 
 $( "#tablepage" ).live( "pageshow", function() {
@@ -74,15 +82,15 @@ $( "#tablepage" ).live( "pageshow", function() {
     var currentSelections = []; // list of buttons selected indexed by key
     var numberCorrect = 0;
 
-    // add table headers for each key (apart from ignoreKeys)
+    // add table headers for each key (apart from wordData.ignoreKeys)
     $( this ).find( "thead" ).each( function( index, element ) {
         var tr=$( "<tr>" );
 
-        for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
-            if ( !ignoreKeys[ keyIndex ] ) {
+        for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
+            if ( !wordData.ignoreKeys[ keyIndex ] ) {
                 var td=$( "<td>" )
                     .attr( "align", "center" )
-                    .append( keys[ keyIndex ] );
+                    .append( wordData.keys[ keyIndex ] );
                 tr.append( td );
             }
         }
@@ -106,16 +114,16 @@ $( "#tablepage" ).live( "pageshow", function() {
         }
 
         // trim the list to the selected lessons
-        for ( var wordIndex=0; wordIndex<words.length; wordIndex++ ) {
-            var thisLesson = words[ wordIndex ][ "lesson" ]-1;
-            if ( !ignoreLessons[ thisLesson ] ) {
-                selectedWords.push( words[ wordIndex ] );
+        for ( var wordIndex=0; wordIndex<wordData.words.length; wordIndex++ ) {
+            var thisLesson = wordData.words[ wordIndex ][ "lesson" ]-1;
+            if ( !wordData.ignoreLessons[ thisLesson ] ) {
+                selectedWords.push( wordData.words[ wordIndex ] );
             }
         }
 
         // shuffle the indexes
-        for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
-            if ( !ignoreKeys[ keyIndex ] ) {
+        for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
+            if ( !wordData.ignoreKeys[ keyIndex ] ) {
                 indexList[ keyIndex ] = [];
                 for ( var wordIndex=0; wordIndex<selectedWords.length; wordIndex++ ) {
                     indexList[ keyIndex ][ wordIndex ]=wordIndex;
@@ -128,8 +136,8 @@ $( "#tablepage" ).live( "pageshow", function() {
 
             var countIgnoredKeys = function() {
                 var retVal = 0;
-                for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
-                    if ( ignoreKeys[ keyIndex ] ) {
+                for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
+                    if ( wordData.ignoreKeys[ keyIndex ] ) {
                         retVal++;
                     }
                 }
@@ -138,10 +146,10 @@ $( "#tablepage" ).live( "pageshow", function() {
             }
 
             var tr=$( "<tr>" );
-            for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
-                if ( !ignoreKeys[ keyIndex ] ) {
+            for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
+                if ( !wordData.ignoreKeys[ keyIndex ] ) {
                     var shuffledWordIndex = indexList[ keyIndex ][ wordIndex ];
-                    var thisKey = keys[ keyIndex ];
+                    var thisKey = wordData.keys[ keyIndex ];
                     var thisWord = selectedWords[ shuffledWordIndex ][ thisKey ];
                     var thisLesson = selectedWords[ shuffledWordIndex ][ "lesson" ];
 
@@ -193,8 +201,8 @@ $( "#tablepage" ).live( "pageshow", function() {
 
                             var countSelectedKeys = function() {
                                 var retVal = 0;
-                                for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
-                                    if ( !ignoreKeys[ keyIndex ] && ( keySelected[ keyIndex ] != null ) ) {
+                                for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
+                                    if ( !wordData.ignoreKeys[ keyIndex ] && ( keySelected[ keyIndex ] != null ) ) {
                                         retVal++;
                                     }
                                 }
@@ -221,7 +229,7 @@ $( "#tablepage" ).live( "pageshow", function() {
                                     keySelected[ thisKeyIndex ] = $( this );
                                 }
                             } else {
-                                var thisKey = keys[ thisKeyIndex ];
+                                var thisKey = wordData.keys[ thisKeyIndex ];
                                 var correct =
                                     selectedWords[ thisWordIndex ][ thisKey ]
                                     === selectedWords[ currentlySelectedWord ][ thisKey ];
@@ -231,7 +239,7 @@ $( "#tablepage" ).live( "pageshow", function() {
                                     keySelected[ thisKeyIndex ] = $( this );
 
                                     var allKeysSelected = function() {
-                                        var retVal = countSelectedKeys() == (keys.length-countIgnoredKeys());
+                                        var retVal = countSelectedKeys() == (wordData.keys.length-countIgnoredKeys());
 
                                         return retVal;
                                     }
@@ -241,8 +249,8 @@ $( "#tablepage" ).live( "pageshow", function() {
                                         // correctly selected each key, so remove the buttons and tds
 
                                         noWordSelected = true;
-                                        for ( var keyIndex=0; keyIndex<keys.length; keyIndex++ ) {
-                                            if ( !ignoreKeys[ keyIndex ] ) {
+                                        for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
+                                            if ( !wordData.ignoreKeys[ keyIndex ] ) {
                                                 var buttonToRemove = keySelected[ keyIndex ];
                                                 var buttonTd = buttonToRemove.closest( "td" );
 
@@ -296,7 +304,7 @@ $( "#tablepage" ).live( "pageshow", function() {
                         return false;
                     });
 
-                    var columnWidth = 100.0/(keys.length-countIgnoredKeys());
+                    var columnWidth = 100.0/(wordData.keys.length-countIgnoredKeys());
 
                     var thisTd = $( "<td>" )
                         .css( "width", columnWidth+"%" )
