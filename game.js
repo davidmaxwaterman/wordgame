@@ -1,6 +1,5 @@
 var wordData;
 $.getJSON( "wordlist.json", function( data ) {
-    console.log("MAXMAXMAX/");
     wordData = data;
 
     $( "#intropage" ).live( "pagecreate", function(event) {
