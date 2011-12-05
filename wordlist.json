@@ -1,8 +1,8 @@
 {
     "keys" : [ "lesson", "Pinyin", "Chinese(simplified)", "English" ],
     "ignoreKeys" : [ true, false, false, false ],
-    "lessons" : [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "radicals", "debug" ],
-    "ignoreLessons" : { "1":false, "2":true, "3":true, "4":true, "5":true, "6":true, "7":true, "8":true, "9":true, "10":true, "11":true, "12":true, "radicals":true, "debug":true },
+    "lessons" : [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "radicals" ],
+    "ignoreLessons" : { "1":false, "2":true, "3":true, "4":true, "5":true, "6":true, "7":true, "8":true, "9":true, "10":true, "11":true, "12":true, "radicals":true },
     "words" : [
         { "lesson":"1", "Pinyin":"nǐ", "Chinese(simplified)":"你", "English":"you" },
         { "lesson":"1", "Pinyin":"hǎo", "Chinese(simplified)":"好", "English":"good" },
@@ -265,7 +265,6 @@
         { "lesson":"radicals", "Pinyin":"yoú", "Chinese(simplified)":"酉", "English":"re. wine" },
         { "lesson":"radicals", "Pinyin":"shí", "Chinese(simplified)":"石", "English":"re. stone" },
         { "lesson":"radicals", "Pinyin":"rén", "Chinese(simplified)":"人", "English":"re. human" },
-        { "lesson":"radicals", "Pinyin":"shān", "Chinese(simplified)":"山", "English":"re. mountain" },
-        { "lesson":"debug", "Pinyin":"pinyin", "Chinese(simplified)":"chinese character", "English":"english" }
+        { "lesson":"radicals", "Pinyin":"shān", "Chinese(simplified)":"山", "English":"re. mountain" }
     ]
 }
