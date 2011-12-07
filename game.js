@@ -291,13 +291,15 @@ $( "#tablepage" ).live( "pageshow", function() {
 
                                         var allWordsCorrect = ( numberCorrect === selectedWords.length );
                                         if ( allWordsCorrect ) {
-                                            console.log("Opening popup");
-                                            $("#popupList").popupwindow("open");
+                                            var p = $( "#popupList" ).find( "p" );
+                                            p.text( "You completed that game! Now press 'back' and try again." );
+                                            $( "#popupList" ).popupwindow( "open" );
                                         }
                                     }
                                 } else {
-                                    // highlight in red?
-                                    alert( "hint: "+selectedWords[ currentlySelectedWord ][ thisKey ] );
+                                    var p = $( "#popupList" ).find( "p" );
+                                    p.text( "hint: "+selectedWords[ currentlySelectedWord ][ thisKey ] );
+                                    $( "#popupList" ).popupwindow( "open" );
                                 }
                             }
                         }
