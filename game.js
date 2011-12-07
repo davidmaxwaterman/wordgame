@@ -291,7 +291,8 @@ $( "#tablepage" ).live( "pageshow", function() {
 
                                         var allWordsCorrect = ( numberCorrect === selectedWords.length );
                                         if ( allWordsCorrect ) {
-                                            alert( "Congratulations! You finished the game!" );
+                                            console.log("Opening popup");
+                                            $("#popupList").popupwindow("open");
                                         }
                                     }
                                 } else {
