@@ -2,7 +2,7 @@ var wordData;
 $.getJSON( "wordlist.json", function( data ) {
     wordData = data;
 
-    $( "#intropage" ).live( "pagecreate", function(event) {
+    $( "#intropage" ).live( "pagebeforecreate", function(event) {
 
         $( "fieldset#keyselection" ).each( function( index, element ) {
 
@@ -68,8 +68,6 @@ $.getJSON( "wordlist.json", function( data ) {
 
         });
     });
-
-    $( "#intropage" ).trigger( "pagecreate" );
 });
 
 $( "#tablepage" ).live( "pageshow", function() {
