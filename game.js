@@ -98,7 +98,7 @@ $( "#tablepage" ).live( "pageshow", function() {
 
     $( this ).find( "tbody" ).each( function( index, element ) {
         var tbody = $( element );
-        var selectedWords = [];
+        var shuffledWords = [];
         var indexList = [];
 
         var shuffle = function( listToShuffle ) {
@@ -115,7 +115,7 @@ $( "#tablepage" ).live( "pageshow", function() {
         for ( var wordIndex=0; wordIndex<wordData.words.length; wordIndex++ ) {
             var thisLesson = wordData.words[ wordIndex ][ "lesson" ];
             if ( !wordData.ignoreLessons[ thisLesson ] ) {
-                selectedWords.push( wordData.words[ wordIndex ] );
+                shuffledWords.push( wordData.words[ wordIndex ] );
             }
         }
 
@@ -123,14 +123,14 @@ $( "#tablepage" ).live( "pageshow", function() {
         for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
             if ( !wordData.ignoreKeys[ keyIndex ] ) {
                 indexList[ keyIndex ] = [];
-                for ( var wordIndex=0; wordIndex<selectedWords.length; wordIndex++ ) {
+                for ( var wordIndex=0; wordIndex<shuffledWords.length; wordIndex++ ) {
                     indexList[ keyIndex ][ wordIndex ]=wordIndex;
                 }
                 shuffle( indexList[ keyIndex ] );
             }
         }
 
-        for ( var wordIndex=0; wordIndex<selectedWords.length; wordIndex++ ) {
+        for ( var wordIndex=0; wordIndex<shuffledWords.length; wordIndex++ ) {
 
             var countIgnoredKeys = function() {
                 var retVal = 0;
@@ -148,8 +148,8 @@ $( "#tablepage" ).live( "pageshow", function() {
                 if ( !wordData.ignoreKeys[ keyIndex ] ) {
                     var shuffledWordIndex = indexList[ keyIndex ][ wordIndex ];
                     var thisKey = wordData.keys[ keyIndex ];
-                    var thisWord = selectedWords[ shuffledWordIndex ][ thisKey ];
-                    var thisLesson = selectedWords[ shuffledWordIndex ][ "lesson" ];
+                    var thisWord = shuffledWords[ shuffledWordIndex ][ thisKey ];
+                    var thisLesson = shuffledWords[ shuffledWordIndex ][ "lesson" ];
 
                     var thisText = $( "<span>" )
                         .addClass( "ui-btn-text" )
@@ -228,9 +228,54 @@ $( "#tablepage" ).live( "pageshow", function() {
                                 }
                             } else {
                                 var thisKey = wordData.keys[ thisKeyIndex ];
-                                var correct =
-                                    selectedWords[ thisWordIndex ][ thisKey ]
-                                    === selectedWords[ currentlySelectedWord ][ thisKey ];
+                                var checkCombinations = function( thisKeyIndex, thisWordIndex, keySelected ) {
+                                    var retVal = false;
+
+                                    // make array with key and word indices
+                                    var selectedWords = [];
+                                    selectedWords[ thisKeyIndex ] = thisWordIndex;
+                                    for ( var keySelectedIndex=0; keySelectedIndex<keySelected.length; keySelectedIndex++ ) {
+                                        if ( keySelected[ keySelectedIndex ] != null ) {
+                                            selectedWords[ keySelectedIndex ] = keySelected[ keySelectedIndex ].attr( "word-index" )
+                                        }
+                                    }
+
+                                    // for each key
+                                    for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
+                                        if ( wordData.ignoreKeys[ keyIndex ] || !selectedWords[ keyIndex ] ) continue;
+
+                                        var thisWordIndex = selectedWords[ keyIndex ];
+
+                                        var valid = true;
+                                        // for each other key
+                                        for ( var otherKeyIndex=0; otherKeyIndex<wordData.keys.length; otherKeyIndex++ ) {
+                                            if ( wordData.ignoreKeys[ otherKeyIndex ] || ( otherKeyIndex == keyIndex ) || !selectedWords[ otherKeyIndex ] ) continue;
+
+                                            var otherWordIndex = selectedWords[ otherKeyIndex ];
+
+                                            // these match if the values of the keys are the same for both this word and other word
+                                            var otherKey = wordData.keys[ otherKeyIndex ];
+                                            var thisWordString = shuffledWords[ thisWordIndex ][ otherKey ];
+                                            var otherWordString = shuffledWords[ otherWordIndex ][ otherKey ];
+                                            var theseMatch = ( thisWordString == otherWordString );
+                                            if ( !theseMatch ) { // all have to match, so break as soon as one doesn't
+                                                valid = false;
+                                                break;
+                                            }
+                                        }
+
+                                        if (valid) {
+                                            retVal = true;
+                                            break;
+                                        }
+                                    }
+
+                                    return retVal;
+                                };
+                                console.log( "MAXMAXMAX/checkCombinations/"+checkCombinations( thisKeyIndex, thisWordIndex, keySelected ) );
+                                var correct = checkCombinations( thisKeyIndex, thisWordIndex, keySelected );
+                                    //shuffledWords[ thisWordIndex ][ thisKey ]
+                                    //=== shuffledWords[ currentlySelectedWord ][ thisKey ];
                                 if ( correct ) {
                                     $( this ).each( selectButton );
 
@@ -285,9 +330,9 @@ $( "#tablepage" ).live( "pageshow", function() {
                                         tbody.find( "a[key-index="+thisKeyIndex+"]" ).each( deselectButton );
 
                                         numberCorrect++;
-                                        document.title = "Game "+numberCorrect+"/"+selectedWords.length;
+                                        document.title = "Game "+numberCorrect+"/"+shuffledWords.length;
 
-                                        var allWordsCorrect = ( numberCorrect === selectedWords.length );
+                                        var allWordsCorrect = ( numberCorrect === shuffledWords.length );
                                         if ( allWordsCorrect ) {
                                             var p = $( "#popupList" ).find( "p" );
                                             p.text( "You completed that game! Now press 'back' and try again." );
@@ -296,7 +341,7 @@ $( "#tablepage" ).live( "pageshow", function() {
                                     }
                                 } else {
                                     var p = $( "#popupList" ).find( "p" );
-                                    p.text( "hint: "+selectedWords[ currentlySelectedWord ][ thisKey ] );
+                                    p.text( "hint: "+shuffledWords[ currentlySelectedWord ][ thisKey ] );
                                     $( "#popupList" ).popupwindow( "open" );
                                 }
                             }
@@ -320,3 +365,4 @@ $( "#tablepage" ).live( "pageshow", function() {
     });
 
 });
+
