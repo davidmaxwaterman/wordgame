@@ -274,8 +274,6 @@ $( "#tablepage" ).live( "pageshow", function() {
                                     return retVal;
                                 };
                                 var correct = checkCombinations( thisKeyIndex, thisWordIndex, keySelected );
-                                    //shuffledWords[ thisWordIndex ][ thisKey ]
-                                    //=== shuffledWords[ currentlySelectedWord ][ thisKey ];
                                 if ( correct ) {
                                     $( this ).each( selectButton );
 
@@ -288,41 +286,53 @@ $( "#tablepage" ).live( "pageshow", function() {
                                     }
 
                                     if ( allKeysSelected() ) {
-
-                                        // correctly selected each key, so remove the buttons and tds
                                         noWordSelected = true;
+
+                                        // user correctly selected each key, so turn selected buttons greem...
                                         for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
                                             if ( !wordData.ignoreKeys[ keyIndex ] ) {
                                                 var buttonToRemove = keySelected[ keyIndex ];
-                                                var buttonTd = buttonToRemove.closest( "td" );
-
-                                                var nextButton = buttonTd
-                                                    .closest( "tr" )
-                                                    .next( "tr" )
-                                                    .find( "[key-index="+keyIndex+"]" );
-                                                var nextButtonWordIndex = nextButton.attr( "word-index" );
-
-                                                buttonToRemove.remove();
-
-                                                while ( nextButton.length ) {
-                                                    var nextButtonTd = nextButton.closest( "td" );
-
-                                                    buttonTd.append( nextButton );
-
-                                                    nextButton = nextButtonTd
-                                                        .closest( "tr" )
-                                                        .next( "tr" )
-                                                        .find( "[key-index="+keyIndex+"]" );
-                                                    nextButtonWordIndex = nextButton.attr( "word-index" );
-
-                                                    buttonTd = nextButtonTd;
-                                                }
-
-                                                keySelected[ keyIndex ] = null;
+                                                buttonToRemove
+                                                    .find( ".ui-btn-inner" ).css( "background-color", "green" );
                                             }
                                         }
 
-                                        tbody.find( "tr" ).last().remove();
+                                        // ...and remove the buttons and tds
+                                        var intervalId = setInterval( function() {
+                                            clearInterval( intervalId );
+                                            for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
+                                                if ( !wordData.ignoreKeys[ keyIndex ] ) {
+                                                    var buttonToRemove = keySelected[ keyIndex ];
+                                                    var buttonTd = buttonToRemove.closest( "td" );
+
+                                                    var nextButton = buttonTd
+                                                        .closest( "tr" )
+                                                        .next( "tr" )
+                                                        .find( "[key-index="+keyIndex+"]" );
+                                                    var nextButtonWordIndex = nextButton.attr( "word-index" );
+
+                                                    buttonToRemove.remove();
+
+                                                    while ( nextButton.length ) {
+                                                        var nextButtonTd = nextButton.closest( "td" );
+
+                                                        buttonTd.append( nextButton );
+
+                                                        nextButton = nextButtonTd
+                                                            .closest( "tr" )
+                                                            .next( "tr" )
+                                                            .find( "[key-index="+keyIndex+"]" );
+                                                        nextButtonWordIndex = nextButton.attr( "word-index" );
+
+                                                        buttonTd = nextButtonTd;
+                                                    }
+
+                                                    keySelected[ keyIndex ] = null;
+                                                }
+                                            }
+
+                                            tbody.find( "tr" ).last().remove();
+                                        }, 1000 );
 
                                         // on n950, it seems to be quite easy to select a button accidentally
                                         // so here we deselect them all for the same key
