@@ -265,6 +265,9 @@
         { "lesson":"radicals", "Pinyin":"yoú", "Chinese(simplified)":"酉", "English":"re. wine" },
         { "lesson":"radicals", "Pinyin":"shí", "Chinese(simplified)":"石", "English":"re. stone" },
         { "lesson":"radicals", "Pinyin":"rén", "Chinese(simplified)":"人", "English":"re. human" },
-        { "lesson":"radicals", "Pinyin":"shān", "Chinese(simplified)":"山", "English":"re. mountain" }
+        { "lesson":"radicals", "Pinyin":"shān", "Chinese(simplified)":"山", "English":"re. mountain" },
+        { "lesson":"debug", "Pinyin":"pinyin", "Chinese(simplified)":"chinese character", "English":"english" },
+        { "lesson":"debug", "Pinyin":"hěn", "Chinese(simplified)":"很", "English":"very" },
+        { "lesson":"debug", "Pinyin":"tài", "Chinese(simplified)":"太", "English":"very" }
     ]
 }
