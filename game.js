@@ -1,10 +1,13 @@
 var wordData;
-$.getJSON( "wordlist.json", function( data ) {
-    wordData = data;
 
-    $( "#intropage" ).live( "pagebeforecreate", function( event ) {
+// modify page before jqm gets to it
+$( "#intropage" ).live( "pagebeforecreate", function( event ) {
+    var $page = $(this);
 
-        $( "fieldset#keyselection" ).each( function( index, element ) {
+    $.getJSON( "wordlist.json", function( data ) {
+        wordData = data;
+
+        $page.find( "fieldset#keyselection" ).each( function( index, element ) {
 
             // add the column/key selector buttons
             for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
@@ -35,7 +38,7 @@ $.getJSON( "wordlist.json", function( data ) {
             }
         });
 
-        $( this ).find( "fieldset#lessonselection" ).each( function( index, element ) {
+        $page.find( "fieldset#lessonselection" ).each( function( index, element ) {
             // add the lesson selector buttons
             for ( var lessonIndex=0; lessonIndex<wordData.lessons.length; lessonIndex++ ) {
                 var lesson = wordData.lessons[ lessonIndex ];
@@ -67,6 +70,8 @@ $.getJSON( "wordlist.json", function( data ) {
             }
 
         });
+
+        $page.trigger( "pagecreate" );
     });
 });
 
