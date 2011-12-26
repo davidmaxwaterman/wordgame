@@ -2,7 +2,7 @@ var wordData;
 $.getJSON( "wordlist.json", function( data ) {
     wordData = data;
 
-    $( "#intropage" ).live( "pagebeforecreate", function(event) {
+    $( "#intropage" ).live( "pagebeforecreate", function( event ) {
 
         $( "fieldset#keyselection" ).each( function( index, element ) {
 
@@ -23,9 +23,9 @@ $.getJSON( "wordlist.json", function( data ) {
 
                     label.bind( "vclick", function() {
                         var labelFor = $( this ).attr( "for" );
-                        var checked = $("input#"+labelFor).is( ":checked" );
+                        var checked = $( "input#"+labelFor ).is( ":checked" );
 
-                        var keyIndex = labelFor.split("_")[1];
+                        var keyIndex = labelFor.split( "_" )[1];
 
                         wordData.ignoreKeys[ keyIndex ] = checked;
 
@@ -46,7 +46,7 @@ $.getJSON( "wordlist.json", function( data ) {
                     .attr( "for", "lesson_"+lesson )
                     .html( lesson );
 
-                if (!wordData.ignoreLessons[ lesson ]) {
+                if ( !wordData.ignoreLessons[ lesson ] ) {
                     input.attr( "checked", "checked" );
                 }
 
@@ -56,9 +56,9 @@ $.getJSON( "wordlist.json", function( data ) {
 
                 label.bind( "vclick", function() {
                     var labelFor = $( this ).attr( "for" );
-                    var checked = $("input#"+labelFor).is( ":checked" );
+                    var checked = $( "input#"+labelFor ).is( ":checked" );
 
-                    var lessonIndex = labelFor.split("_")[1];
+                    var lessonIndex = labelFor.split( "_" )[1];
 
                     wordData.ignoreLessons[ lessonIndex ] = checked;
 
@@ -119,7 +119,7 @@ $( "#tablepage" ).live( "pageshow", function() {
             }
         }
 
-        // shuffle the indexes
+        // shuffle the indices
         for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
             if ( !wordData.ignoreKeys[ keyIndex ] ) {
                 indexList[ keyIndex ] = [];
@@ -216,7 +216,7 @@ $( "#tablepage" ).live( "pageshow", function() {
                                     keySelected[ thisKeyIndex ] = null;
 
                                     noWordSelected = countSelectedKeys()===0;
-                                } else if (countSelectedKeys() === 1) {
+                                } else if ( countSelectedKeys() === 1 ) {
                                     // user changed mind
                                     // deselect all buttons for this key
                                     tbody.find( "a[key-index="+thisKeyIndex+"]" ).each( deselectButton );
@@ -236,7 +236,8 @@ $( "#tablepage" ).live( "pageshow", function() {
                                     selectedWords[ thisKeyIndex ] = thisWordIndex;
                                     for ( var keySelectedIndex=0; keySelectedIndex<keySelected.length; keySelectedIndex++ ) {
                                         if ( keySelected[ keySelectedIndex ] != null ) {
-                                            selectedWords[ keySelectedIndex ] = keySelected[ keySelectedIndex ].attr( "word-index" )
+                                            var wordIndex = keySelected[ keySelectedIndex ].attr( "word-index" )
+                                            selectedWords[ keySelectedIndex ] = wordIndex;
                                         }
                                     }
 
@@ -264,7 +265,7 @@ $( "#tablepage" ).live( "pageshow", function() {
                                             }
                                         }
 
-                                        if (valid) {
+                                        if ( valid ) {
                                             retVal = true;
                                             break;
                                         }
@@ -272,7 +273,6 @@ $( "#tablepage" ).live( "pageshow", function() {
 
                                     return retVal;
                                 };
-                                console.log( "MAXMAXMAX/checkCombinations/"+checkCombinations( thisKeyIndex, thisWordIndex, keySelected ) );
                                 var correct = checkCombinations( thisKeyIndex, thisWordIndex, keySelected );
                                     //shuffledWords[ thisWordIndex ][ thisKey ]
                                     //=== shuffledWords[ currentlySelectedWord ][ thisKey ];
@@ -282,7 +282,7 @@ $( "#tablepage" ).live( "pageshow", function() {
                                     keySelected[ thisKeyIndex ] = $( this );
 
                                     var allKeysSelected = function() {
-                                        var retVal = countSelectedKeys() == (wordData.keys.length-countIgnoredKeys());
+                                        var retVal = countSelectedKeys() == ( wordData.keys.length-countIgnoredKeys() );
 
                                         return retVal;
                                     }
@@ -290,7 +290,6 @@ $( "#tablepage" ).live( "pageshow", function() {
                                     if ( allKeysSelected() ) {
 
                                         // correctly selected each key, so remove the buttons and tds
-
                                         noWordSelected = true;
                                         for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
                                             if ( !wordData.ignoreKeys[ keyIndex ] ) {
@@ -340,8 +339,45 @@ $( "#tablepage" ).live( "pageshow", function() {
                                         }
                                     }
                                 } else {
+                                    var hintString = function( thisKeyIndex, keySelected ) {
+                                        var retVal = "no hint found";
+
+                                        // for each of the selected keys
+                                        //   allTextTheSame = true;
+                                        //   for each of the other selected keys
+                                        //     allTextTheSame &= thisTextTheSame   
+                                        //   if allTextTheSame, then this is the hint
+                                        for ( var keyIndex=0; keyIndex<wordData.keys.length; keyIndex++ ) {
+                                            if ( wordData.ignoreKeys[ keyIndex ] || !keySelected[ keyIndex ] ) continue;
+
+                                            var wordIndex = keySelected[ keyIndex ].attr( "word-index" )
+
+                                            var allTextTheSame = true;
+                                            for ( var otherKeyIndex=0; otherKeyIndex<wordData.keys.length; otherKeyIndex++ ) {
+                                                if ( wordData.ignoreKeys[ otherKeyIndex ] || !keySelected[ otherKeyIndex ] || otherKeyIndex==keyIndex ) continue;
+
+                                                var otherKeyString = wordData.keys[ otherKeyIndex ];
+                                                var otherWordIndex = keySelected[ otherKeyIndex ].attr( "word-index" )
+                                                var otherWord = shuffledWords[ otherWordIndex ][ otherKeyString ];
+                                                var wordForThisKey = shuffledWords[ wordIndex ][ otherKeyString ];
+
+                                                if ( otherWord != wordForThisKey ) {
+                                                    allTextTheSame = false;
+                                                    break;
+                                                }
+                                            }
+
+                                            if ( allTextTheSame ) {
+                                                var thisKeyString = wordData.keys[ thisKeyIndex ];
+                                                retVal = shuffledWords[ wordIndex ][ thisKeyString ];
+                                                break;
+                                            }
+                                        }
+
+                                        return retVal;
+                                    };
                                     var p = $( "#popupList" ).find( "p" );
-                                    p.text( "hint: "+shuffledWords[ currentlySelectedWord ][ thisKey ] );
+                                    p.text( "hint: "+hintString( thisKeyIndex, keySelected ) );
                                     $( "#popupList" ).popupwindow( "open" );
                                 }
                             }
@@ -350,7 +386,7 @@ $( "#tablepage" ).live( "pageshow", function() {
                         return false;
                     });
 
-                    var columnWidth = 100.0/(wordData.keys.length-countIgnoredKeys());
+                    var columnWidth = 100.0/( wordData.keys.length-countIgnoredKeys());
 
                     var thisTd = $( "<td>" )
                         .css( "width", columnWidth+"%" )
