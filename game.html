@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html manifest="cache.manifest">
     <head>
-        <title>Dictionary</title>
+    <script type="text/javascript" src="firebug-lite/build/firebug-lite.js">
+{
+    overrideConsole: false,
+    startInNewWindow: true,
+    startOpened: true,
+    enableTrace: true
+}
+</script>
+        <title>Word Game 0.0.1</title>
 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.css" />
+        <link rel="stylesheet" href="mobile/1.0rc2/jquery.mobile-1.0rc2.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="web-ui-fw/web-ui-fw-widget.css"/>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.js"></script>
-        <script type="text/javascript" src="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.js"></script>
+        <script type="text/javascript" src="jquery-1.6.4.js"></script>
+        <script type="text/javascript" src="mobile/1.0rc2/jquery.mobile-1.0rc2.js"></script>
         <script type="text/javascript" src="web-ui-fw/web-ui-fw-libs.js"></script>
         <script type="text/javascript" src="web-ui-fw/web-ui-fw.js"></script>
         <script type="text/javascript" src="game.js"></script>
@@ -20,7 +28,7 @@
         <div data-role="page" id="intropage">
 
             <div data-role="header">
-                <h1>Game</h1>
+                <h1>Word Game 0.0.1</h1>
             </div><!-- /header -->
 
             <div data-role="content">
@@ -38,9 +46,6 @@
                 After you click 'Start game', you will see a table with a column for each language. You need to click a word in one column, and then click the corresponding words in the other two column. When you get a match, the items will be removed from the table. Eventually, the table will be empty and you will have won the game - woo hoo ;)
                 To play again, use your browser's "back" button and repeat the procedure.
                 </p>
-                <p>
-                NB. There are some bugs. Best to select from left to right and not change your mind by selecting a different 'first' word.
-                </p>
                 <fieldset id="keyselection" data-role="controlgroup" data-type="horizontal" data-tole="fieldcontain">
                     <legend>Languages to include:</legend>
                 </fieldset>
@@ -52,14 +57,14 @@
             </div><!-- /content -->
 
             <div data-role="footer">
-                <h4>Game</h4>
+                <h4>Word Game 0.0.1</h4>
             </div><!-- /footer -->
         </div><!-- /page -->
 
         <div data-role="page" id="tablepage" data-add-back-btn="true">
 
             <div data-role="header">
-                <h1>Game</h1>
+                <h1>Word Game 0.0.1</h1>
             </div><!-- /header -->
 
             <div data-role="content">
@@ -77,7 +82,7 @@
             </div><!-- /content -->
 
             <div data-role="footer">
-                <h4>Game</h4>
+                <h4>Word Game 0.0.1</h4>
             </div><!-- /footer -->
         </div><!-- /page -->
 

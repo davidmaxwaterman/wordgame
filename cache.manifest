@@ -1,0 +1,22 @@
+CACHE MANIFEST
+# application version 0.0.1
+CACHE:
+game.html
+mobile/1.0rc2/jquery.mobile-1.0rc2.css
+jquery-1.6.4.js
+mobile/1.0rc2/jquery.mobile-1.0rc2.js
+web-ui-fw/web-ui-fw-theme.css
+web-ui-fw/web-ui-fw-widget.css
+web-ui-fw/web-ui-fw.js
+web-ui-fw/images/ajax-loader.png
+web-ui-fw/images/icon-search-black.png
+web-ui-fw/images/icons-18-black.png
+web-ui-fw/images/icons-18-white.png
+web-ui-fw/images/icons-36-black.png
+web-ui-fw/images/icons-36-white.png
+web-ui-fw/images/web-ui-fw_noContent.png
+web-ui-fw/images/web-ui-fw_volume_icon.png
+game.js
+wordlist.json
+NETWORK:
+FALLBACK:
